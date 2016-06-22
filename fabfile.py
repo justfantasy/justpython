@@ -20,8 +20,8 @@ import config, os, os.path
 
 # 配置连接服务器的参数
 env.user = 'root'
-env.hosts = ['10.0.7.64']
-env.password = 'xxcb@test_0515'
+env.hosts = ['10.0.8.88']
+env.password = 'vue@test_0000'
 
 # 代码上传
 def code_upload(path):

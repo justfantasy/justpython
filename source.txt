@@ -1,2 +1,2 @@
-www.vue.com/ttt.html
-www.vue.com/vue
+at.vue.cn/
+at.vue.cn/2.php

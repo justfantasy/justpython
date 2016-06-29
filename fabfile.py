@@ -104,7 +104,10 @@ def go():
 # @desc: 代码回滚，v表示tar包的名称
 # @exec: 调用方式，fab back:v=201606291015
 @task()
-def back(v):
+def back(v=None):
+    if v == None:
+        with cd(config.target_bak_basepath):
+            v = run("ls -lt *.tar|sed 1d|sed '2,$d'|awk '{print $9}'|awk -F '.' '{print $1}'")
     print yellow(u'将代码回退到版本：' + v)
     with cd(config.target_bak_basepath):
         run('tar -xPvf ' + v + '.tar')

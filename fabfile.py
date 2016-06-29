@@ -26,9 +26,9 @@ import config, os, os.path
 from datetime import *
 
 # 配置连接服务器的参数
-env.user = 'root'
-env.hosts = ['192.168.1.64']
-env.password = '123456'
+env.user = config.user
+env.hosts = config.hosts
+env.password = config.password
 
 # 代码上传
 def code_upload(path, remoteBakName):
@@ -59,7 +59,8 @@ def code_upload(path, remoteBakName):
 
         # 文件备份操作
         if files.exists(remoteAbsPath):
-            run('tar -cPvf ' + remoteBakName + ' ' + remoteAbsPath)
+            #with hide('running', 'stdout'):
+            run('tar -rPvf ' + remoteBakName + ' ' + remoteAbsPath)
 
         # 判断是否是文件，如果是目录，则遍历出所有的文件
         if os.path.isfile(localAbsPath):
@@ -106,9 +107,11 @@ def go():
 @task()
 def back(v=None):
     if v == None:
-        with cd(config.target_bak_basepath):
-            v = run("ls -lt *.tar|sed 1d|sed '2,$d'|awk '{print $9}'|awk -F '.' '{print $1}'")
+        with hide('running', 'stdout'):
+            with cd(config.target_bak_basepath):
+                v = run("ls -lt *.tar|sed -n '1p'|awk '{print $9}'|awk -F '.' '{print $1}'")
     print yellow(u'将代码回退到版本：' + v)
+    #with hide('stdout'):
     with cd(config.target_bak_basepath):
         run('tar -xPvf ' + v + '.tar')
 
